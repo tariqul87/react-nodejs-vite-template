@@ -76,6 +76,7 @@ From **root**:
 From **backend** or **frontend**:
 
 - Use each app’s own `package.json` scripts (e.g. `npm run dev`, `npm run build`).
+- See `frontend/README.md` and `backend/README.md` for detailed development instructions per package.
 
 ## Git
 

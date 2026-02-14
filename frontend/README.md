@@ -1,69 +1,85 @@
-# React + TypeScript + Vite
+# Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React (Vite + TypeScript + Tailwind CSS) app for the React + Node.js template. Talks to the backend API for data.
 
-Currently, two official plugins are available:
+## Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js 18+
+- npm (or yarn/pnpm)
+- Backend running at `http://localhost:3001` (or use root `npm run dev` to run both)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Install dependencies
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+From the **repository root** (recommended):
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run install:all
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Or from this directory:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd frontend
+npm install
 ```
+
+### Run the frontend
+
+**Option A: From repository root** (runs frontend and backend together)
+
+```bash
+npm run dev
+```
+
+**Option B: From this directory** (frontend only; ensure backend is running separately)
+
+```bash
+cd frontend
+npm run dev
+```
+
+The app runs at [http://localhost:5173](http://localhost:5173) with hot module replacement (HMR).
+
+### API proxy
+
+In development, Vite proxies `/api` to `http://localhost:3001`. So the app can call `/api/hello` (and other API routes) without setting `VITE_API_URL` or dealing with CORS. The backend must be running on port 3001 for API calls to work.
+
+### Scripts
+
+| Script   | Description                          |
+|----------|--------------------------------------|
+| `dev`    | Start Vite dev server               |
+| `build`  | TypeScript check + production build |
+| `preview`| Serve production build locally      |
+| `lint`   | Run ESLint                          |
+
+### Environment
+
+Create a `.env` file in this directory when needed. See `.env.example`.
+
+| Variable       | Description | When to set |
+|----------------|-------------|-------------|
+| `VITE_API_URL` | Backend base URL (no trailing slash) | Leave unset in local dev (proxy is used). Set for production or Docker (e.g. `http://localhost:3001`). |
+
+### Stack
+
+- **React 19** — UI
+- **Vite 7** — dev server and build
+- **TypeScript** — types
+- **Tailwind CSS 4** — styling (`@tailwindcss/vite` in `vite.config.ts`)
+
+### Production
+
+```bash
+npm run build
+```
+
+Output is in `dist/`. To test the production build locally:
+
+```bash
+npm run preview
+```
+
+For Docker, the root `docker compose up --build` builds and serves the frontend (e.g. on port 3000).
