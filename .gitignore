@@ -1,0 +1,36 @@
+# Single repo at root only — do not run git init in backend/ or frontend/
+backend/.git
+frontend/.git
+
+# Dependencies
+node_modules
+
+# Build output
+dist
+backend/dist
+frontend/dist
+*.local
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs and debug
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS and editors
+.DS_Store
+.idea
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
