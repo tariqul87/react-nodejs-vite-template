@@ -4,7 +4,7 @@ Fullstack template: **React 19** (Vite 7) frontend and **Node.js** (Express, Typ
 
 ## Stack
 
-- **Frontend:** React, Vite, TypeScript, MUI
+- **Frontend:** React, Vite, TypeScript, Tailwind CSS
 - **Backend:** Express, TypeScript, CORS
 - **Dev:** Vite proxy (same-origin in dev), optional root `npm run dev` to run both
 

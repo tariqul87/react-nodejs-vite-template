@@ -1,15 +1,5 @@
 import { useState } from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Container,
-  Box,
-  Button,
-  CircularProgress,
-  Paper,
-  Alert,
-} from "@mui/material";
+import axios from "axios";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -20,14 +10,12 @@ function App() {
     setLoading(true);
     setError("");
     try {
-      // In dev with Vite proxy, use relative URL. Otherwise use VITE_API_URL (e.g. http://localhost:3001).
       const apiBase = import.meta.env.VITE_API_URL ?? "";
-      const response = await fetch(`${apiBase}/api/hello`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setMessage(data.message);
+      const url = `${apiBase}/api/hello`;
+
+      const response = await axios.get(url);
+
+      setMessage(response.data.message);
     } catch (e: unknown) {
       setError(`Failed to fetch message: ${e}`);
     } finally {
@@ -36,56 +24,77 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            React + Node.js Template
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Container maxWidth="sm" sx={{ mt: 4 }}>
-        <Box
-          sx={{
-            my: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="h4" component="h1" gutterBottom>
+    <div className="min-h-screen bg-slate-50">
+      <header className="bg-slate-800 text-white shadow">
+        <div className="mx-auto max-w-2xl px-4 py-3">
+          <h1 className="text-lg font-semibold">React + Node.js Template</h1>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-md px-4 py-8">
+        <div className="flex flex-col items-center gap-6">
+          <h2 className="text-2xl font-bold text-slate-800">
             React Frontend
-          </Typography>
-          <Typography variant="body1" align="center" sx={{ mb: 2 }}>
+          </h2>
+          <p className="text-center text-slate-600">
             Click the button below to fetch a message from the Node.js backend.
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
+          </p>
+
+          <button
+            type="button"
             onClick={fetchMessage}
             disabled={loading}
+            className="rounded-lg bg-slate-800 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {loading ? <CircularProgress size={24} /> : "Fetch Message"}
-          </Button>
+            {loading ? (
+              <span className="inline-flex items-center gap-2">
+                <svg
+                  className="size-5 animate-spin"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  aria-hidden
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+                Loading…
+              </span>
+            ) : (
+              "Fetch Message"
+            )}
+          </button>
 
           {message && (
-            <Paper elevation={3} sx={{ mt: 4, p: 2, width: "100%" }}>
-              <Typography variant="h6" component="p" align="center">
+            <div className="w-full rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <p className="text-sm font-medium text-slate-500">
                 Backend Response:
-              </Typography>
-              <Typography variant="body1" align="center" color="text.secondary">
-                {message}
-              </Typography>
-            </Paper>
+              </p>
+              <p className="mt-1 text-slate-800">{message}</p>
+            </div>
           )}
 
           {error && (
-            <Alert severity="error" sx={{ mt: 4, width: "100%" }}>
+            <div
+              className="w-full rounded-lg border border-red-200 bg-red-50 p-4 text-red-800"
+              role="alert"
+            >
               {error}
-            </Alert>
+            </div>
           )}
-        </Box>
-      </Container>
+        </div>
+      </main>
     </div>
   );
 }
