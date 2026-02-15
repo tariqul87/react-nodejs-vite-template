@@ -37,14 +37,20 @@ Fullstack template: **React 19** (Vite 7) frontend and **Node.js** (Express, Typ
 
 ### Option 2: Docker
 
+Run both frontend and backend in containers. No local Node install needed.
+
 ```bash
 docker compose up --build
 ```
 
-- Frontend: [http://localhost:3000](http://localhost:3000)  
-- Backend: [http://localhost:3001](http://localhost:3001)  
+Then open the app in your browser. The frontend is built with the correct API URL and CORS is configured so the “Fetch Message” button works without extra setup.
 
-When using Docker, set `VITE_API_URL=http://localhost:3001` in the frontend (e.g. in build args or env) so the browser can reach the API.
+| Where        | URL |
+|-------------|-----|
+| **Frontend** | [http://localhost:3000](http://localhost:3000) |
+| **Backend**  | [http://localhost:3001](http://localhost:3001) |
+
+Ports differ from local dev: Docker uses **3000** for the frontend (nginx); local dev uses **5173** (Vite).
 
 ## Environment
 
