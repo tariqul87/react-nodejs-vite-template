@@ -56,9 +56,10 @@ Ports differ from local dev: Docker uses **3000** for the frontend (nginx); loca
 
 ### Frontend (`frontend/.env`)
 
-| Variable        | Description |
-|----------------|-------------|
-| `VITE_API_URL` | Backend base URL (no trailing slash). Leave unset in local dev when using the Vite proxy. Set for production or Docker (e.g. `http://localhost:3001`). |
+| Variable         | Description |
+|------------------|-------------|
+| `VITE_API_URL`   | Backend base URL (no trailing slash). Leave unset in local dev when using the Vite proxy. Set for production or Docker (e.g. `http://localhost:3001`). |
+| `VITE_APP_TITLE` | Browser tab title for the frontend. Defaults to `React + Node.js Template` if unset. |
 
 See `frontend/.env.example`.
 
@@ -93,4 +94,5 @@ Use git only from the **repository root**. Do not run `git init` in `backend/` o
 1. Clone or use “Use this template.”
 2. Run `npm run install:all`, then `npm run dev` to confirm everything works.
 3. Replace the demo “Fetch Message” flow with your own API and UI.
-4. Adjust CORS, env, and Docker as needed for your deployment.
+4. The frontend now uses React Router with a `Home` page (`src/pages/Home.tsx`) and a sample `/test` route defined in `App.tsx`. For learning purposes, the navbar is currently implemented inside `Home`, but for real projects you should keep shared layout (like navbars) at the router level in `App.tsx`.
+5. Adjust CORS, env, and Docker as needed for your deployment.
