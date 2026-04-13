@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MainLayout from "./components/MainLayout";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 
 function App() {
@@ -10,12 +12,15 @@ function App() {
 
   return (
     <BrowserRouter>
-      {/* For practice clarity navbar was moved into a page.
-          In a real project, keep shared layout (like navbars) here
-          alongside the router so it wraps all routes. */}
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/test" element={<div className="p-4">Test route</div>} />
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/test"
+            element={<div className="p-4">Test route</div>}
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

@@ -24,34 +24,9 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <nav className="bg-slate-900 text-white">
-        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
-          <span className="text-base font-semibold">
-            React + Node.js Template
-          </span>
-          <div className="flex gap-4 text-sm">
-            <a href="/" className="hover:underline">
-              Home
-            </a>
-            <a href="/test" className="hover:underline">
-              Test
-            </a>
-          </div>
-        </div>
-      </nav>
-
-      <header className="bg-slate-800 text-white shadow">
-        <div className="mx-auto max-w-2xl px-4 py-3">
-          <h1 className="text-lg font-semibold">React + Node.js Template</h1>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-md px-4 py-8">
-        <div className="flex flex-col items-center gap-6">
-          <h2 className="text-2xl font-bold text-slate-800">
-            React Frontend
-          </h2>
+    <div className="mx-auto max-w-md">
+      <div className="flex flex-col items-center gap-6">
+          <h2 className="text-2xl font-bold text-slate-800">React Frontend</h2>
           <p className="text-center text-slate-600">
             Click the button below to fetch a message from the Node.js backend.
           </p>
@@ -109,11 +84,9 @@ function Home() {
               {error}
             </div>
           )}
-        </div>
-      </main>
+      </div>
     </div>
   );
 }
 
 export default Home;
-
