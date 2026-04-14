@@ -1,8 +1,12 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainLayout from "./components/MainLayout";
 import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
+import ForgotPasswordPage from "./pages/ForgotPassword";
+import HomePage from "./pages/Home";
+import LandingPage from "./pages/Landing";
+import LoginPage from "./pages/Login";
+import SignupPage from "./pages/Signup";
 
 function App() {
   useEffect(() => {
@@ -15,11 +19,11 @@ function App() {
       <Navbar />
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/test"
-            element={<div className="p-4">Test route</div>}
-          />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/home" element={<HomePage />} />
         </Route>
       </Routes>
     </BrowserRouter>
