@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainLayout from "./components/MainLayout";
 import Navbar from "./components/Navbar";
+import { AuthProvider } from "./auth/AuthContext";
+import GuestOnlyRoute from "./auth/GuestOnlyRoute";
+import ProtectedRoute from "./auth/ProtectedRoute";
 import ForgotPasswordPage from "./pages/ForgotPassword";
 import HomePage from "./pages/Home";
 import LandingPage from "./pages/Landing";
@@ -15,18 +18,41 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/home" element={<HomePage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route
+              path="/"
+              element={
+                <GuestOnlyRoute>
+                  <LandingPage />
+                </GuestOnlyRoute>
+              }
+            />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route
+              path="/forgot-password"
+              element={
+                <GuestOnlyRoute>
+                  <ForgotPasswordPage />
+                </GuestOnlyRoute>
+              }
+            />
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

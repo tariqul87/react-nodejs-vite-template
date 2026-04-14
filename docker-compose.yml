@@ -4,9 +4,19 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - NODE_ENV=production
-      - PORT=3001
-      - CORS_ORIGIN=http://localhost:3000
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3001
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://template_user:template_password@postgres:5432/template_local}
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change-this-access-secret-in-real-env}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-this-refresh-secret-in-real-env}
+      JWT_ACCESS_EXPIRES_IN: ${JWT_ACCESS_EXPIRES_IN:-15m}
+      JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-7d}
+      DEMO_USER_EMAIL: ${DEMO_USER_EMAIL:-demo@example.com}
+      DEMO_USER_PASSWORD: ${DEMO_USER_PASSWORD:-Password123!}
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - fullstack-network
 
@@ -14,7 +24,7 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_URL: http://localhost:3001
+        VITE_API_URL: ${VITE_API_URL:-}
     ports:
       - "3000:80"
     depends_on:
@@ -22,6 +32,28 @@ services:
     networks:
       - fullstack-network
 
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-template_local}
+      POSTGRES_USER: ${POSTGRES_USER:-template_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-template_password}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-template_user} -d ${POSTGRES_DB:-template_local}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - fullstack-network
+
 networks:
   fullstack-network:
     driver: bridge
+
+volumes:
+  postgres_data:
