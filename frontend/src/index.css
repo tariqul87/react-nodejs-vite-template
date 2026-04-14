@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+@theme {
+  --color-ui-primary: #0f172a;
+  --color-ui-primary-hover: #1e293b;
+  --color-ui-fg: #0f172a;
+  --color-ui-muted: #475569;
+  --color-ui-label: #334155;
+  --color-ui-border: #cbd5e1;
+  --color-ui-border-focus: #64748b;
+  --color-ui-danger: #dc2626;
+  --radius-ui: 0.5rem;
+  --radius-ui-card: 0.75rem;
+}
+
 body {
   margin: 0;
   min-height: 100vh;

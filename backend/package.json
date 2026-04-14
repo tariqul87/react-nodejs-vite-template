@@ -5,23 +5,38 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc && node scripts/rewrite-api-import.cjs",
+    "build": "prisma generate && tsc && node scripts/rewrite-api-import.cjs",
     "start": "node dist/index.js",
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "seed:demo-user": "tsx src/scripts/seedDemoUser.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^17.0.21",
     "ts-node-dev": "^1.1.8",
     "tsx": "^4.21.0",
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
-    "express": "^4.17.3"
+    "dotenv": "^17.4.2",
+    "express": "^4.17.3",
+    "express-rate-limit": "^8.3.2",
+    "jsonwebtoken": "^9.0.3",
+    "prisma": "^6.19.3",
+    "zod": "^4.3.6"
   }
 }

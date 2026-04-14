@@ -1,0 +1,16 @@
+services:
+  backend:
+    env_file:
+      - ./backend/.env.local
+  frontend:
+    build:
+      args:
+        VITE_API_URL: ""
+  postgres:
+    env_file:
+      - ./backend/.env.local
+    volumes:
+      - postgres_local_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_local_data:

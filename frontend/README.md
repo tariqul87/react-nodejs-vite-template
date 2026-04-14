@@ -1,6 +1,6 @@
 # Frontend
 
-React (Vite + TypeScript + Tailwind CSS) app for the React + Node.js template. Talks to the backend API for data.
+React (Vite + TypeScript + Tailwind CSS) app for the React + Node.js template. Includes login/signup flows, token refresh, and protected routes.
 
 ## Development
 
@@ -46,6 +46,13 @@ The app runs at [http://localhost:5173](http://localhost:5173) with hot module r
 
 In development, Vite proxies `/api` to `http://localhost:3001`. So the app can call `/api/hello` (and other API routes) without setting `VITE_API_URL` or dealing with CORS. The backend must be running on port 3001 for API calls to work.
 
+### Auth flow in template
+
+- Login and signup call `/api/auth/*` with `credentials: "include"` so the backend can set an **HttpOnly refresh cookie** (not readable from JS).
+- Access token is returned in JSON and attached as a **Bearer** header for protected requests.
+- On load, the app calls `POST /api/auth/refresh` (cookie sent automatically) to obtain a new access token when a session exists.
+- `/home` is protected by a route guard and redirects to `/login` when unauthenticated.
+
 ### Scripts
 
 | Script   | Description                          |
@@ -57,7 +64,14 @@ In development, Vite proxies `/api` to `http://localhost:3001`. So the app can c
 
 ### Environment
 
-Create a `.env` file in this directory when needed. See `.env.example`.
+Frontend variable sources by environment:
+
+- Local Docker (`docker-compose.local.yml`): `VITE_API_URL` is hardcoded to `http://localhost:3001` in compose build args.
+- Dev Docker (`docker-compose.dev.yml`): `VITE_API_URL` is read from the compose environment and falls back to `http://localhost:3001`.
+- Prod Docker (`docker-compose.prod.yml`): `VITE_API_URL` must be set explicitly before `docker compose up`.
+- Vite local dev (`npm run dev`): leave `VITE_API_URL` unset so `/api` proxy is used.
+
+See `.env.example` for optional frontend env variables.
 
 | Variable       | Description | When to set |
 |----------------|-------------|-------------|
