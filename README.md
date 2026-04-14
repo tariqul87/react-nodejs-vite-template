@@ -96,6 +96,10 @@ npm run docker:down:prod
 
 More scripts, environment variables, and auth details are in [Architecture.md](./Architecture.md). Per-package notes: `frontend/README.md`, `backend/README.md`.
 
+## Frontend UI
+
+The SPA uses a small **UI primitive layer** in [`frontend/src/ui`](./frontend/src/ui): Tailwind-styled `Button`, `Input`, `Label`, `Text`, and `Heading` that forward native DOM props and refs so pages stay straightforward React. **Design tokens** (colors, radii) live in [`frontend/src/index.css`](./frontend/src/index.css) under Tailwind’s `@theme` block. **App-specific** chrome (navbar, layout) stays in [`frontend/src/components`](./frontend/src/components). See [Architecture.md — Frontend](./Architecture.md#frontend) for how this fits the rest of the stack and how you might swap in a heavier library later.
+
 ## Using this as a template
 
 1. Clone or use **Use this template** on GitHub.

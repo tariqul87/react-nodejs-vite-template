@@ -246,4 +246,28 @@ authRouter.get("/me", requireAuth, async (req: AuthenticatedRequest, res: Respon
   return res.json({ user });
 });
 
+authRouter.get("/profile", requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.auth?.userId;
+  if (!userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      email: true,
+      displayName: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  return res.json({ user });
+});
+
 export default authRouter;

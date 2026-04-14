@@ -6,6 +6,11 @@ export type AuthUser = {
   displayName: string | null;
 };
 
+export type ProfileUser = AuthUser & {
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type AuthSessionResponse = {
   accessToken: string;
   user: AuthUser;
@@ -51,5 +56,10 @@ export async function logout() {
 
 export async function me() {
   const response = await authApi.get<{ user: AuthUser }>("/api/auth/me");
+  return response.data.user;
+}
+
+export async function fetchProfile() {
+  const response = await authApi.get<{ user: ProfileUser }>("/api/auth/profile");
   return response.data.user;
 }

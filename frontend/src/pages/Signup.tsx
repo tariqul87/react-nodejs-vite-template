@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { Button, Heading, Input, Label, Text } from "../ui";
 
 function SignupPage() {
   const { signup, isLoading } = useAuth();
@@ -31,73 +32,61 @@ function SignupPage() {
   };
 
   return (
-    <section className="mx-auto max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h1 className="text-2xl font-bold text-slate-900">Signup</h1>
-      <p className="mt-2 text-sm text-slate-600">
+    <section className="mx-auto max-w-md rounded-(--radius-ui-card) border border-ui-border bg-white p-6 shadow-sm">
+      <Heading>Signup</Heading>
+      <Text variant="muted" className="mt-2">
         Create an account with your email and password.
-      </p>
+      </Text>
 
       <form className="mt-6 space-y-4" onSubmit={(event) => void handleSubmit(event)}>
         <div>
-          <label htmlFor="signup-email" className="mb-1 block text-sm font-medium text-slate-700">
-            Email
-          </label>
-          <input
+          <Label htmlFor="signup-email">Email</Label>
+          <Input
             id="signup-email"
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             placeholder="you@example.com"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
           />
         </div>
         <div>
-          <label htmlFor="signup-password" className="mb-1 block text-sm font-medium text-slate-700">
-            Password
-          </label>
-          <input
+          <Label htmlFor="signup-password">Password</Label>
+          <Input
             id="signup-password"
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Create a password"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
           />
         </div>
         <div>
-          <label
-            htmlFor="signup-confirm-password"
-            className="mb-1 block text-sm font-medium text-slate-700"
-          >
-            Confirm Password
-          </label>
-          <input
+          <Label htmlFor="signup-confirm-password">Confirm Password</Label>
+          <Input
             id="signup-confirm-password"
             type="password"
             value={confirmPassword}
             onChange={(event) => setConfirmPassword(event.target.value)}
             placeholder="Confirm your password"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none"
           />
         </div>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && (
+          <Text variant="danger" role="alert">
+            {error}
+          </Text>
+        )}
 
-        <button
-          type="submit"
-          disabled={isSubmitting || isLoading}
-          className="w-full rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-60"
-        >
+        <Button type="submit" disabled={isSubmitting || isLoading} className="w-full">
           {isLoading ? "Loading..." : isSubmitting ? "Creating account..." : "Create Account"}
-        </button>
+        </Button>
       </form>
 
-      <p className="mt-4 text-sm text-slate-600">
+      <Text variant="muted" className="mt-4">
         Already have an account?{" "}
-        <Link to="/login" className="text-slate-800 hover:underline">
+        <Link to="/login" className="text-ui-fg hover:underline">
           Login
         </Link>
-      </p>
+      </Text>
     </section>
   );
 }

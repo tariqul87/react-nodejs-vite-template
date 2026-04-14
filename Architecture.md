@@ -111,11 +111,15 @@ Secrets and lifetimes live in env (`JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `J
 
 ## Frontend
 
-**Stack:** React 19, Vite 7, TypeScript, Tailwind CSS, React Router.
+**Stack:** React 19, Vite 7, TypeScript, Tailwind CSS v4 (Vite plugin), React Router.
 
 **API calls:** The app should call **relative** `/api/...` so requests stay same-origin through Vite or nginx. With **`VITE_API_URL` unset** (recommended), the client uses the current host; set it only if you accept the cookie/CORS implications of a separate API origin.
 
 **Auth UX:** `AuthContext` loads the user after login/refresh, keeps the access token in memory, and wires axios (or equivalent) to send `credentials: 'include'` for cookie-backed refresh. Guest-only routes and protected routes live beside the router setup in `App.tsx`.
+
+**UI layout:** Keep **app-specific** UI in `frontend/src/components` (for example `Navbar`, `MainLayout`). Reusable, presentation-only primitives live in **`frontend/src/ui`** and are re-exported from `frontend/src/ui/index.ts`. They wrap native elements (`button`, `input`, …), use **`forwardRef`**, extend the matching **`ComponentPropsWithRef`** (or equivalent) so handlers and `className` pass through, and merge styles with a small **`cn()`** helper. **`Button`** supports `variant` and `size`; **`Text`** supports a few text variants (including `muted` and `danger` for errors). This keeps screens declarative; if you later adopt Chakra UI, MUI, or similar, you can replace the implementations inside `ui/` while preserving similar prop names where it helps.
+
+**Design tokens:** Shared colors and radii used by the UI layer are declared in **`frontend/src/index.css`** in an `@theme { ... }` block (for example `--color-ui-primary`, `--radius-ui`). Pages and primitives reference them via generated utilities (`bg-ui-primary`, `rounded-(--radius-ui)`, and so on).
 
 **Build:** `npm run build` in `frontend` produces static assets consumed by nginx in Docker or any static host.
 
@@ -265,5 +269,5 @@ Each package also has its own `package.json` scripts; see `frontend/README.md` a
 ## Repository & template notes
 
 - **Single git repo at the root** — the root `.gitignore` avoids nested `backend/.git` and `frontend/.git` so the project stays one tree.
-- **Sample app:** React Router drives pages such as `Home` and a sample `/test` route in `App.tsx`. The navbar may live on a page for demo purposes; for real apps, shared chrome usually belongs in a layout route in `App.tsx`.
+- **Sample app:** React Router in `App.tsx` drives landing, auth (`/login`, `/signup`, `/forgot-password`), and protected areas (`/home`, `/profile`). Shared chrome uses `MainLayout` and a top-level `Navbar`.
 - **Customization:** Replace the sample “fetch message” / demo flows with your API and UI; tighten CORS, env, and Docker for your deployment target.

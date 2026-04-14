@@ -1,17 +1,12 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import UserMenu from "./UserMenu";
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
   `rounded px-2 py-1 transition hover:bg-slate-700 ${isActive ? "bg-slate-700 font-semibold" : ""}`;
 
 function Navbar() {
-  const navigate = useNavigate();
-  const { isAuthenticated, user, logout } = useAuth();
-
-  const handleLogout = async () => {
-    await logout();
-    navigate("/login", { replace: true });
-  };
+  const { isAuthenticated } = useAuth();
 
   return (
     <nav className="bg-slate-900 text-white">
@@ -37,23 +32,7 @@ function Navbar() {
           <NavLink to="/home" className={linkClass}>
             Home
           </NavLink>
-          {isAuthenticated && (
-            <>
-              <span
-                className="max-w-[140px] truncate rounded bg-slate-700 px-2 py-1 text-xs sm:max-w-none"
-                title={user?.email ?? ""}
-              >
-                {user?.email}
-              </span>
-              <button
-                type="button"
-                onClick={() => void handleLogout()}
-                className="rounded border border-slate-500 bg-slate-800 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-slate-700"
-              >
-                Log out
-              </button>
-            </>
-          )}
+          {isAuthenticated && <UserMenu />}
         </div>
       </div>
     </nav>
